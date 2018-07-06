@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>消息详情</title>
+		<style type="text/css">
+			.wrap{width: 100%;font-family:"微软雅黑";overflow: auto;}
+			.ser-box{width: 95%;margin: 0 auto;}
+			.server-head{border-bottom:1px solid #e8e8e8;}
+			.server-head p{line-height:20px;}
+			.ser-p,.server-con{color: #333;font-size: 1.1em;width: 100%;line-height:25px;word-wrap:break-word;}
+			.ser-time span{color: #999;font-size: 1em;}
+			.server-con img{max-width: 100%;}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="ser-box">
+	           <div class="server-head">
+	           	  <p class="ser-p"><?php echo $info['title']?></p>
+	           	  <p class="ser-time"><span><?php echo date('Y-m-d H:i:s',$info['create_time'])?></span></p>
+	           </div>
+	           <div class="server-con">
+				   <?php echo $info['content']?>
+	           </div>				
+			</div>
+
+		</div>
+	</body>
+</html>

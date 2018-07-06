@@ -1,0 +1,189 @@
+{extend name="public/base" /}
+
+{block name="title"}<title>{if condition="$data"}{$Think.lang.edit}{else /}{$Think.lang.create}{/if}</title>{/block}
+
+{block name="pjax_container"}
+<section class="content-header">
+    <h1>学员管理</h1>
+    <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i> 学员管理</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tab1" data-toggle="tab">{$Think.lang.base_param}</a></li>
+                    <li><a href="#tab2" data-toggle="tab">{$Think.lang.base_password}</a></li>
+                    <li class="pull-right"><a href="javascript:history.back(-1)" class="btn btn-sm" style="padding:10px 2px;"><i class="fa fa-list"></i> {$Think.lang.back}</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <form class="form-horizontal" method="POST" action="" onsubmit="return false" >
+                            <input type="hidden" name="id" value="{$list.id}" />
+                            <input type="hidden" name="actions" value="member" />
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">真实姓名</label>
+                                <div class="col-sm-7"><input class="form-control" name="name"   value="{$list.name}" placeholder="真实姓名"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">手机号码</label>
+                                <div class="col-sm-7"><input class="form-control" name="iphone" value="{$list.iphone}" placeholder="手机号码"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">身份证号</label>
+                                <div class="col-sm-7"><input class="form-control" name="idnumber" value="{$list.idnumber}" placeholder="身份证号"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">积分</label>
+                                <div class="col-sm-7"><input class="form-control" name="integral" value="{$list.integral}" placeholder="积分"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属驾校</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control select2" name="school_id" style="width:100%;">
+                                    {volist name="school" id="vo"}
+                                        <option value="{$vo.id}" > {$vo.school_name}</option>
+                                    {/volist}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">所属教练</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control select2" name="teacher_id" style="width:100%;">
+                                    {volist name="teacher" id="vo"}
+                                        <option value="{$vo.id}" >{$vo.teacher_name}</option>
+                                    {/volist}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">车牌号</label>
+                                <div class="col-sm-7"><input class="form-control" name="license" value="{$list.license}" placeholder="{$Think.lang.license}"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">状态</label>
+                                <div class="col-sm-7">
+                                    <select class="form-control select2" name="status" style="width:100%;">
+                                        <option value="0" {if condition="$list.status eq '0'"}selected="selected"{/if} >在用</option>
+                                        <option value="1" {if condition="$list.status eq '1'"}selected="selected"{/if} >禁用</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group hide">
+                                <label class="col-sm-2 control-label">{$Think.lang.create_time}</label>
+                                <div class="col-sm-7"><input class="form-control" disabled="disabled" value="{$data.create_time}" placeholder="{$Think.lang.create_time}"></div>
+                            </div>
+                            <div class="form-group hide">
+                                <label class="col-sm-2 control-label">{$Think.lang.reg_ip}</label>
+                                <div class="col-sm-7"><input class="form-control" disabled="disabled" value="{$data.reg_ip}" placeholder="{$Think.lang.reg_ip}"></div>
+                            </div>
+                            <div class="form-group hide">
+                                <label class="col-sm-2 control-label">{$Think.lang.last_time}</label>
+                                <div class="col-sm-7"><input class="form-control" disabled="disabled" value="{$data.last_time_turn}" placeholder="{$Think.lang.last_time}"></div>
+                            </div>
+                            <div class="form-group hide">
+                                <label class="col-sm-2 control-label">{$Think.lang.last_ip}</label>
+                                <div class="col-sm-7"><input class="form-control" disabled="disabled" value="{$data.last_ip}" placeholder="{$Think.lang.last_ip}"></div>
+                            </div>
+                            <div class="form-group hide">
+                                <label class="col-sm-2 control-label">{$Think.lang.logins}</label>
+                                <div class="col-sm-7"><input class="form-control" disabled="disabled" value="{$data.logins}" placeholder="{$Think.lang.logins}"></div>
+                            </div>
+                            <div class="form-group hide">
+                                <label class="col-sm-2 control-label">{$Think.lang.update_time}</label>
+                                <div class="col-sm-7"><input class="form-control" disabled="disabled" value="{$data.update_time}" placeholder="{$Think.lang.update_time}"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-7">
+                                    <div class="btn-group pull-right">
+                                        <button type="submit" class="btn btn-info pull-right submits" data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; {$Think.lang.submit}">{$Think.lang.submit}</button>
+                                    </div>
+                                    <div class="btn-group pull-left">
+                                        <button type="reset" class="btn btn-warning">{$Think.lang.reset}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="tab-pane" id="tab2">
+                        <form class="form-horizontal" method="POST" action="" onsubmit="return false" >
+                            <input type="hidden" name="id" value="{$data.id}" />
+                            <input type="hidden" name="actions" value="password" />
+                            <div class="form-group {if condition=" $data['id'] == UID "}hide{/if}">
+                                <label class="col-sm-2 control-label">旧密码</label>
+                                <div class="col-sm-7"><input class="form-control" name="oldpassword" value="" placeholder="{$Think.lang.oldpassword}" type="password"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">新密码</label>
+                                <div class="col-sm-7"><input class="form-control" name="password" value="" placeholder="{$Think.lang.newpassword}" type="password"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">确认密码</label>
+                                <div class="col-sm-7"><input class="form-control" name="repassword" value="" placeholder="{$Think.lang.repassword}" type="password"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-7">
+                                    <div class="btn-group pull-right">
+                                        <button type="submit" class="btn btn-info pull-right submits" data-loading-text="&lt;i class='fa fa-spinner fa-spin '&gt;&lt;/i&gt; {$Think.lang.submit}">{$Think.lang.submit}</button>
+                                    </div>
+                                    <div class="btn-group pull-left">
+                                        <button type="reset" class="btn btn-warning">{$Think.lang.reset}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+var KDEDT_DELETE_URL = '{:url("Uploads/delete")}';   //【删除地址】如果有使用到KindEditor编辑器的文件空间删除功能，必须添加该删除地址全局变量
+
+$(function(){
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue'
+    });
+    
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $(".select2").select2({language:"zh-CN"});
+    
+    $('.timepicker').datetimepicker({
+        format: 'YYYY-MM-DD',   //YYYY-MM-DD HH:mm:ss
+        locale: moment.locale('zh-cn')
+    });
+    
+    KindEditor.create('textarea[name="info"]',{
+        width : '100%',   //宽度
+        height : '320px',   //高度
+        resizeType : '0',   //禁止拖动
+        allowFileManager : true,   //允许对上传图片进行管理
+        uploadJson : '{:url("Uploads/upload")}',   //文件上传地址
+        fileManagerJson : '{:url("Uploads/manager")}',   //文件管理地址
+        urlType : 'domain',   //带域名的路径
+        formatUploadUrl: true,   //自动格式化上传后的URL
+        autoHeightMode: false,   //开启自动高度模式
+        afterBlur: function () { this.sync(); }   //同步编辑器数据
+    });
+    
+    return new CropAvatar($('#avatar-box'));
+    
+    {if condition=" $rest_login == 1 "}
+    restlogin('{$rest_login_info}');   //登录超时
+    {/if}
+})
+</script>
+{/block}

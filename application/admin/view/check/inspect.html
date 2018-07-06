@@ -1,0 +1,116 @@
+{extend name="public/base" /}
+
+{block name="title"}<title>{$Think.lang.list}</title>{/block}
+
+{block name="pjax_container"}
+<section class="content-header">
+    <h1>商家信息</h1>
+    <ol class="breadcrumb">
+        <li class="active"><i class="fa fa-dashboard"></i> 商家信息</li>
+    </ol>
+</section>
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    {include file="public/top_action" /}
+                    {include file="public/search" /}
+                </div>
+                <div class="box-body table-responsive">
+                    <table class="table table-bordered table-hover table-sort">
+                        <tr>
+                            <th width="35"><input type="checkbox" class="minimal checkbox-toggle"></th>
+                            <th>ID{:table_sort('id')}</th>
+                            <th>用户姓名</th>
+                            <th>用户电话</th>
+                            <th>检车时间</th>
+                            <th>车架号</th>
+                            <th>取车方式</th>
+                            <th>行驶证照片</th>
+                            <th>取车地址</th>
+                            <th>是否开发票</th>
+                            <th>发票类型</th>
+                            <th>发票个人或公司名称</th>
+                            <th>发票号码</th>
+                            <th>是否取消</th>
+                            <th width="204">{$Think.lang.action}</th>
+                        </tr>
+                        {volist name="list" id="vo"}
+                        <tr>
+                            <td style="vertical-align:middle"><input type="checkbox" name="id[]" value="{$vo.id}" class="minimal"></td>
+                            <td style="vertical-align:middle">{$vo.id}</td>
+                            <td style="vertical-align:middle">{$vo.inspect_name}</td>
+                            <td style="vertical-align:middle">{$vo.inspect_phone}</td>
+                            <td style="vertical-align:middle">{$vo.inspect_time}</td>
+                            <td style="vertical-align:middle">{$vo.plate}</td>
+                            <td style="vertical-align:middle"><?php if($vo['inspect_type'] == 0 ){ ?>自主送达<?php } else{?>上门取车<?php }?></td>
+                            <td style="vertical-align:middle"><img src="{$vo.img}" style="width:50px;" /></td>
+                            <td style="vertical-align:middle">{$vo.address}</td>
+                            <td style="vertical-align:middle"><?php if($vo['is_invoice'] == 0 ){ ?>不开<?php } else{?>开<?php }?></td>
+                            <td style="vertical-align:middle"><?php if($vo['invoice_type'] == 0 ){ ?>无<?php } elseif($vo['invoice_type'] == 1){?>公司<?php }else{?>个人 <?php } ?></td>
+                            <td style="vertical-align:middle">{$vo.invoice_name}</td>
+                            <td style="vertical-align:middle">{$vo.invoice_number}</td>
+                            <td style="vertical-align:middle"><?php if($vo['status'] == 0 ){ ?>已预约<?php } elseif($vo['invoice_type'] == 1){?>已取消 <?php } ?> </td>
+                            <td style="vertical-align:middle">
+                                {:authAction(CONTROLLER_NAME.'/authGroup', 'auth_group', ['id' => $vo.id])}
+                                {:authAction(CONTROLLER_NAME.'/inspect_edit', 'inspect_edit', ['id' => $vo.id])} 
+                                {:authAction(CONTROLLER_NAME.'/inspect_delete', 'inspect_delete', $vo.id)} 
+                            </td>
+                        </tr>
+                        {/volist}
+                    </table>
+                </div>
+                <div class="box-footer clearfix">
+                    {$list->render()}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+$(function(){
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
+        checkboxClass: 'icheckbox_minimal-blue',
+        radioClass: 'iradio_minimal-blue'
+    });
+    
+    /*ajax页面加载icheck，有该控件的页面才需要*/
+    $(".select2").select2({language:"zh-CN"});
+    
+    /*全选-反选*/
+    $('.checkbox-toggle').on('ifChecked', function(event){
+        var _this = $(this);
+        var _table = _this.closest('.table');
+        _table.find("tr td input[type='checkbox']").iCheck("check");
+    });
+    $('.checkbox-toggle').on('ifUnchecked', function(event){
+        var _this = $(this);
+        var _table = _this.closest('.table');
+        _table.find("tr td input[type='checkbox']").iCheck("uncheck");
+    });
+    
+    $('.editable').editable({
+        emptytext: "empty",
+        params: function(params) {      //参数
+            var data = {};
+            data['id'] = params.pk;
+            data[params.name] = params.value;
+            return data;
+        },
+        success: function(response, newValue) {
+            var res = $.parseJSON( response );
+            if(res.status == 1){
+            }else{
+                return res.info;
+            }
+        }
+    });
+    
+    {if condition=" $rest_login == 1 "}
+    restlogin('{$rest_login_info}');   //登录超时
+    {/if}
+})
+</script>
+{/block}
